@@ -1,0 +1,15 @@
+
+
+@import "./top-menu.css";
+@import "./top-photo.css";
+@import "./top-logo.css";
+@import "./top-slogan.css";
+
+.top {
+    padding-bottom: 100px;
+}
+@media screen and (max-width: 800px) {
+    .top {
+        padding-bottom: 16vw;
+    }
+}

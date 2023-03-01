@@ -1,0 +1,154 @@
+
+
+
+.window {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--window-bg);
+    opacity: 0;
+    pointer-events: none;
+    z-index: -100;
+    transition: opacity 0.3s;
+}
+.window.open {
+    transition: opacity 0.2s;
+    z-index: 10000;
+    pointer-events: all;
+    opacity: 1;
+}
+
+.window__wrapper {
+    padding: 70px 70px 100px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+}
+.window__wrapper:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, #F7FBFF 22.51%, #BED5EA 112.8%);
+    -webkit-mask-image: url("../img/strategies__item__mask.svg");
+    mask-image: url("../img/strategies__item__mask.svg");
+    -webkit-mask-size: 200%;
+    mask-size: 200%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: right bottom;
+    mask-position: right bottom;
+    z-index: -1;
+}
+.window__title {
+    color: var(--darkblue);
+    font-size: 30px;
+    line-height: 30px;
+    font-weight: 800;
+    padding-bottom: 30px;
+    padding-right: 50px;
+    
+}
+.window__content {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 22px;
+    color: var(--darkblue);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.window * {
+    color: var(--darkblue);
+}
+.window__content__h1 {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 22px;
+    color: var(--darkblue);
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+.window__link {
+    display: block;
+    font-size: 14px;
+    margin: 30px 0 0;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--darkblue);
+    text-transform: uppercase;
+    text-decoration: none;
+}
+.window__link span {
+    margin-left: 10px;
+    position: relative;
+    display: inline-block;
+    width: 17px;
+    height: 11px;
+    background: var(--darkblue);
+    -webkit-mask-image: url("../img/icn_arrow_blue.svg");
+    mask-image: url("../img/../img/icn_arrow_blue.svg");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    transform: rotate(-90deg);
+}
+.window__close {
+    position: absolute;
+    right: 37px;
+    top: 25px;
+    width: 80px;
+    height: 80px;
+    background: url("../img/window__close.svg") no-repeat center center;
+    cursor: pointer;
+    background-size: 40px;
+    z-index: 1000;
+}
+
+
+@media screen and (max-width: 800px) { 
+    .window {
+        position: fixed;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        bottom: 0;
+        background: var(--window-bg);
+        opacity: 0;
+        pointer-events: none;
+        z-index: -100;
+        transition: opacity 0.3s;
+        background: linear-gradient(180deg, #F7FBFF 22.51%, #BED5EA 112.8%) no-repeat;
+        background-attachment: fixed;
+        background-size: auto 100%;
+        
+    }
+    .window__wrapper {
+        padding: 50px 20px;
+        display: block;
+        max-height: unset;
+    }
+    .window__wrapper:before{
+        display: none;
+    }
+    .window.open {
+        transition: opacity 0.2s;
+        z-index: 10000;
+        pointer-events: all;
+        opacity: 1;
+        overflow: auto;
+    }
+    .window .wrapper {
+        width: 100%;
+    }
+    .window__close {
+        right: 10px;
+    }
+    
+}

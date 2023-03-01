@@ -1,0 +1,103 @@
+
+
+.menu {
+    display: flex;
+    margin: 75px -15px 55px;
+    z-index: 10;
+}
+.menu__item {
+    margin: 15px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.menu__item__title {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    position: unset;
+}
+
+.menu__item__options {
+    display: none;
+    position: absolute;
+    padding: 10px;
+    background: var(--darkblue);
+    min-width: 100%;
+}
+.menu__item__has-options .menu__item__title {
+    padding-right: 25px;
+}
+.menu__item__has-options:after {
+    position: absolute;
+    content: "";
+    top: 0;
+    right: 0;
+    width: 18px;
+    height: 18px;
+    background: url("../img/icn_arrow_blue.svg") no-repeat center center;
+    pointer-events: none;
+}
+.menu__item__title.open + .menu__item__options {
+    display: block;
+}
+.menu__item__option {
+    font-size: 14px;
+    padding: 5px 0;
+    color: var(--blue);
+}
+.menu__item__option:hover {
+    color: white;
+}
+.hamburger {
+    position: absolute;
+    content: "";
+    top: -5px;
+    left: 0;
+    width: 20px;
+    height: 18px;
+    background: url("../img/hamburger.svg") no-repeat center center;
+    display: none;
+    z-index: 10;
+    cursor: pointer;
+}
+.menu__close {
+    position: absolute;
+    content: "";
+    z-index: 100;
+    top: 40px;
+    right: 40px;
+    width: 30px;
+    height: 30px;
+    background: url("../img/menu__close.svg") no-repeat center center;
+    background-size: 100%;
+    display: none;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+    .hamburger {
+        display: block;
+    }
+    .menu__close {
+        display: block;
+    }
+    .top-menu {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        bottom: 0;
+        left: -100vw;
+        margin: 0;
+        background: var(--darkblue);
+        flex-direction: column;
+        padding: 70px 30px;
+        transition: left 0.3s;
+    }
+    .menu__item__options {
+        position: relative;
+    }
+    .top-menu.open {
+        left: 0;
+    }
+}

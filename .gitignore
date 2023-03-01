@@ -1,0 +1,6 @@
+.vscode/
+cgi-bin/
+s/
+*.pdf
+error_log
+PHPMailerTest/PHPMailer/
