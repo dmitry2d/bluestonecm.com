@@ -1,12 +1,18 @@
 <?php
 
-$reCaptchaPublicKey = "6LcE4zAfAAAAAJqo8MheGrC1LnKqfgThVm49YdWb";
-$reCaptchaSecretKey = "6LcE4zAfAAAAALtk1N6VKn4RGJijvpBWax1ALsTc";
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '/home/bluestonecm/www/PHPMailerTest/PHPMailer/src/Exception.php';
+require '/home/bluestonecm/www/PHPMailerTest/PHPMailer/src/PHPMailer.php';
+require '/home/bluestonecm/www/PHPMailerTest/PHPMailer/src/SMTP.php';
+require '/home/bluestonecm/www/mail_form_credentials.php';
 
 $response = array ('success' => 0, 'message' => 'Mail sent fail');
 
-if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['contact_email'])){
 
+if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['contact_email'])){
+    
     $recaptcha = false;
     $recaptcha_input = $_POST['g-recaptcha-response'];
     $url = 'https://www.google.com/recaptcha/api/siteverify?secret='
@@ -17,7 +23,6 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
         $recaptcha = true;
     };
     if ($recaptcha) {
-
         $firstname = $_POST['contact_firstname'];
         $lastname = $_POST['contact_lastname'];
         $email = $_POST['contact_email'];
@@ -28,28 +33,32 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
         $to = "volcharo@gmail.com";
         $subject = "New contact message from Bluestone";
         $body = "First Name: " . $firstname . "\r\nLast Name: " . $lastname . "\r\nEmail: " . $email . "\r\nPhone: " . $phone . "\r\nMessage: " . $message;
-        $sent = mail (
-            $to,
-            $subject,
-            $body,
-            'From: info@bluestonecm.com' . "\r\n" .
-            'Reply-To: info@bluestonecm.com' . "\r\n" .
-            'MIME-Version: 1.0' . "\r\n" . 
-            'Content-type:text/html; charset=UTF-8' . "\r\n".
-            'X-Mailer: PHP/' . phpversion()
-        );
-
-        // $sent = mail (
-        //     "volcharo@gmail.com",
-        //     "Hello man",
-        //     "lol then",
-        //     'From: info@bluestonecm.com'
-        // );
-
-
-        $response['success'] = 1;
-        $response['sent'] = $sent;
-        $response['message'] = 'Success';
+        try {
+            $mail = new PHPMailer(true);
+            // $mail->SMTPDebug = 0; // Enable verbose debug output
+            $mail->isMail(); // Set mailer to use SMTP
+            $mail->Host = 'localhost'; // Specify main and backup SMTP servers
+            $mail->SMTPAuth = true; // Enable SMTP authentication
+            $mail->Username = $mailUserName; // SMTP username
+            $mail->Password = $mailUserPass; // SMTP password
+            $mail->Port = 587; // TCP port to connect to
+        
+            $mail->setFrom('info@alphacrypto.capital', 'Bluestone Site');
+            $mail->addAddress('brian@bluestonecm.com', 'Owner'); // Add a recipient
+            $mail->addAddress('volcharo@gmail.com', 'Admin'); // Add a recipient
+            $mail->addAddress('tddragon@gmail.com', 'TDD'); // Add a recipient
+            $mail->addReplyTo('volcharo@gmail.com', 'Admin');
+        //  $mail->addCC('cc@example.com');
+        //  $mail->addBCC('bcc@example.com');
+            $mail->isHTML(false); // Set email format to HTML
+            $mail->Subject = $subject;
+            $mail->Body = $body;
+            $mail->send();
+            $response['success'] = 1;
+            $response['message'] = 'Success';
+        } catch (Exception $e) {
+            $response['message'] = $e;
+        }
     } else {
         $response['message'] = 'Recaptcha fail';
     }
@@ -58,19 +67,9 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
     $response['message'] = 'Form data fail';
 }
 
+
 echo json_encode ($response);
 
 exit;
 
 
-
-if (isset($_POST['username']) && $_POST['username'] && isset($_POST['password']) && $_POST['password']) {
-    // do user authentication as per your requirements 
-    // ... 
-    // ... 
-    // based on successful authentication 
-    echo json_encode(array('success' => 1));
-} else {
-    echo json_encode(array('success' => 0));
-}
-?>

@@ -1,60 +1,5 @@
 <?php
-$reCaptchaPublicKey = "6LcE4zAfAAAAAJqo8MheGrC1LnKqfgThVm49YdWb";
-$reCaptchaSecretKey = "6LcE4zAfAAAAALtk1N6VKn4RGJijvpBWax1ALsTc";
-$sent = false;
-if (isset($_COOKIE['contact_sent']) && $_COOKIE['contact_sent'] == 'true') {
-    setcookie ('contact_sent', 'false');
-    $sent = true;
-}
-$recaptcha_error = '';
-if (isset($_COOKIE['recaptcha_error'])) {
-    $recaptcha_error = $_COOKIE['recaptcha_error'];
-};
-setcookie ('recaptcha_error', '');
-if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['contact_email'])){
-    $recaptcha = false;
-    $recaptcha_input = $_POST['g-recaptcha-response'];
-    $url = 'https://www.google.com/recaptcha/api/siteverify?secret='
-    . $reCaptchaSecretKey . '&response=' . $recaptcha_input;
-    $response = file_get_contents($url);
-    $response = json_decode($response);
-    if ($response->success == true) {
-        $recaptcha = true;
-    };
-    setcookie('contact_sent', 'false');
-    if ($recaptcha) {
-        $firstname = $_POST['contact_firstname'];
-        $lastname = $_POST['contact_lastname'];
-        $email = $_POST['contact_email'];
-        $phone = $_POST['contact_phone'] ?? "-";
-        $message = $_POST['contact_message'] ?? "-";
-        $to = "info@bluestonecm.com";
-        // $to = "volcharo@gmail.com";
-        $subject = "New contact message from Bluestone";
-        $body = "First Name: " . $firstname . "\r\nLast Name: " . $lastname . "\r\nEmail: " . $email . "\r\nPhone: " . $phone . "\r\nMessage: " . $message;
-        // $sent = mail (
-        //     $to,
-        //     $subject,
-        //     $body,
-        //     'From: info@bluestonecm.com' . "\r\n" .
-        //     'Reply-To: info@bluestonecm.com' . "\r\n" .
-        //     'Cc: volcharo@gmail.com' . "\r\n" .
-        //     "MIME-Version: 1.0" . "\r\n" . 
-        //     "Content-type:text/html;charset=UTF-8" . "\r\n"
-        // );
-        setcookie('contact_sent', 'true');
-        unset($_POST);
-        // header("Location: ".$_SERVER[REQUEST_URI]);
-        exit;
-    } else {
-        setcookie('recaptcha_error', '<br>Please, confirm that You are not a robot.');
-        unset($_POST);
-        // header("Location: ".$_SERVER[REQUEST_URI]);
-        exit;
-    };
-};
-
-
+    require '/home/bluestonecm/www/mail_form_credentials.php';
 ?>
 
 <!DOCTYPE html>
@@ -71,9 +16,6 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
     <link rel="icon" href="favicon.ico">
     <title>BlueStone</title>
 </head>
-<script>
-    console.log ('<?=print_r($_dev1)?>');
-</script>
 <body>
     <div class="app">
         <div class="top">
@@ -506,7 +448,7 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
 <!--  -->
 
 
-<div class="window<?=$sent?' open':''?>">
+<div class="window mailsent">
     <div class="wrapper">
         <div class="window__wrapper">
             <div class="window__close"></div>

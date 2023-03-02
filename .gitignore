@@ -4,3 +4,5 @@ s/
 *.pdf
 error_log
 PHPMailerTest/PHPMailer/
+mail_form_credentials.*
+index.html
