@@ -1,16 +1,25 @@
 
 
-
-function submitContactForm(form, event) {
-    // $("#connect-form").submit();
+function submitContactForm(form, event, args) {
     event.preventDefault();
     console.log ($(form).serialize());
     $.ajax({
         type: "POST",
         url: 'mail.php',
         data: $(form).serialize(),
-        success: function (res){
-            console.log (JSON.parse(res));
+        success: res => {
+            try {
+                res = JSON.parse(res);
+                if (res.success) {
+                    $('.window').removeClass('open');
+                    $('.window.mailsent').addClass('open');
+                    $('.connect__form__submit').css('display', 'none');
+                    $('.contact__form__submit').css('display', 'none');
+                }
+                
+            } catch (e) {
+                console.log (res);
+            }
         },
         error:function (xhr, ajaxOptions, thrownError){
             alert('Server Error: ' + thrownError);
