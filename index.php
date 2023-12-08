@@ -1,60 +1,5 @@
 <?php
-$reCaptchaPublicKey = "6LcE4zAfAAAAAJqo8MheGrC1LnKqfgThVm49YdWb";
-$reCaptchaSecretKey = "6LcE4zAfAAAAALtk1N6VKn4RGJijvpBWax1ALsTc";
-$sent = false;
-if (isset($_COOKIE['contact_sent']) && $_COOKIE['contact_sent'] == 'true') {
-    setcookie ('contact_sent', 'false');
-    $sent = true;
-}
-$recaptcha_error = '';
-if (isset($_COOKIE['recaptcha_error'])) {
-    $recaptcha_error = $_COOKIE['recaptcha_error'];
-};
-setcookie ('recaptcha_error', '');
-if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['contact_email'])){
-    $recaptcha = false;
-    $recaptcha_input = $_POST['g-recaptcha-response'];
-    $url = 'https://www.google.com/recaptcha/api/siteverify?secret='
-    . $reCaptchaSecretKey . '&response=' . $recaptcha_input;
-    $response = file_get_contents($url);
-    $response = json_decode($response);
-    if ($response->success == true) {
-        $recaptcha = true;
-    };
-    setcookie('contact_sent', 'false');
-    if ($recaptcha) {
-        $firstname = $_POST['contact_firstname'];
-        $lastname = $_POST['contact_lastname'];
-        $email = $_POST['contact_email'];
-        $phone = $_POST['contact_phone'] ?? "-";
-        $message = $_POST['contact_message'] ?? "-";
-        $to = "info@bluestonecm.com";
-        // $to = "volcharo@gmail.com";
-        $subject = "New contact message from Bluestone";
-        $body = "First Name: " . $firstname . "\r\nLast Name: " . $lastname . "\r\nEmail: " . $email . "\r\nPhone: " . $phone . "\r\nMessage: " . $message;
-        // $sent = mail (
-        //     $to,
-        //     $subject,
-        //     $body,
-        //     'From: info@bluestonecm.com' . "\r\n" .
-        //     'Reply-To: info@bluestonecm.com' . "\r\n" .
-        //     'Cc: volcharo@gmail.com' . "\r\n" .
-        //     "MIME-Version: 1.0" . "\r\n" . 
-        //     "Content-type:text/html;charset=UTF-8" . "\r\n"
-        // );
-        setcookie('contact_sent', 'true');
-        unset($_POST);
-        // header("Location: ".$_SERVER[REQUEST_URI]);
-        exit;
-    } else {
-        setcookie('recaptcha_error', '<br>Please, confirm that You are not a robot.');
-        unset($_POST);
-        // header("Location: ".$_SERVER[REQUEST_URI]);
-        exit;
-    };
-};
-
-
+    require '/home/bluestonecm/www/mail_form_credentials.php';
 ?>
 
 <!DOCTYPE html>
@@ -71,9 +16,6 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
     <link rel="icon" href="favicon.ico">
     <title>BlueStone</title>
 </head>
-<script>
-    console.log ('<?=print_r($_dev1)?>');
-</script>
 <body>
     <div class="app">
         <div class="top">
@@ -87,26 +29,27 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
                     <div class="menu__item">
                         <div class="menu__item__title">home</div>
                     </div>
-                    <div class="menu__item">
+                    <!-- <div class="menu__item">
                         <div class="menu__item__title">alternatives</div>
                         <div class="menu__item__options">
                             <div class="menu__item__option" window-open="Polaris Point">Polaris Point</div>
                             <div class="menu__item__option" window-open="Alt Strategies">Alt Strategies</div>
                         </div>
-                    </div>
-                    <div class="menu__item">
+                    </div> -->
+                    <!-- <div class="menu__item">
                         <div class="menu__item__title">etfs</div>
                         <div class="menu__item__options">
                             <div class="menu__item__option" window-open="Adaptive Investments">Adaptive Investments</div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="menu__item">
-                        <div class="menu__item__title">separate accounts</div>
+                        <!-- <div class="menu__item__title">separate accounts</div> -->
+                        <div class="menu__item__title">bluestone strategies</div>
                         <div class="menu__item__options">
-                            <div class="menu__item__option" window-open="Bluestone Adaptive Alpha">Bluestone Adaptive Alpha</div>
-                            <div class="menu__item__option" window-open="Bluestone Elite">Bluestone Elite</div>
-                            <div class="menu__item__option" window-open="Bluestone Income">Bluestone Income</div>
-                            <div class="menu__item__option" window-open="Bluestone Income Plus">Bluestone Income Plus</div>
+                            <div class="menu__item__option" window-open="Bluestone Elite">Elite</div>
+                            <div class="menu__item__option" window-open="Bluestone Income">Income</div>
+                            <div class="menu__item__option" window-open="Bluestone Income Plus">Income Plus</div>
+                            <div class="menu__item__option" window-open="Bluestone Adaptive Investments">Adaptive Alpha Opportunities</div>
                         </div>
                     </div>
                     <div class="menu__item">
@@ -193,17 +136,17 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
                     <div class="strategies__item__text">Bluestone sub-advises this ETF (AGOX) which seeks capital appreciation through data-driven decision…</div>
                     <a href="#" class="strategies__item__link" window-open="Adaptive Investments">more<span></span></a>
                 </div>
-                <div class="strategies__item">
+                <!-- <div class="strategies__item">
                     <div class="strategies__item__title">BLUESTONE<br>ADAPTIVE ALPHA</div>
                     <div class="strategies__item__text">The Bluestone Adaptive Alpha Strategy uses a data-driven investment approach seeking to maximize risk-adjusted returns for our investors. Our approach…</div>
                     <a href="#" class="strategies__item__link" window-open="Bluestone Adaptive Alpha">more<span></span></a>
-                </div>
+                </div> -->
                 <div class="strategies__item">
                     <div class="strategies__item__title">BLUESTONE<br>INCOME PLUS</div>
                     <div class="strategies__item__text">This strategy is designed to deliver a risk-adjusted yield while reducing volatility over a full market cycle. Bluestone Income Plus seeks to achieve…</div>
                     <a href="#" class="strategies__item__link" window-open="Bluestone Income Plus">more<span></span></a>
                 </div>
-                <div class="strategies__item">
+                <!-- <div class="strategies__item">
                     <div class="strategies__item__title">POLARIS POINT,<br>LP</div>
                     <div class="strategies__item__text">Polaris Point is a global multi-strategy fund designed to deliver attractive risk-adjusted returns through a combination of long and short positions across global markets…</div>
                     <a href="#" class="strategies__item__link" window-open="Polaris Point">more<span></span></a>
@@ -212,7 +155,7 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
                     <div class="strategies__item__title">ALTERNATIVE<br>INVESTMENTS</div>
                     <div class="strategies__item__text">Providing opportunistic strategies in real estate, infrastructure, private equity, debt and other alternative asset classes…</div>
                     <a href="#" class="strategies__item__link" window-open="Alt Strategies">more<span></span></a>
-                </div>
+                </div> -->
                 <div class="strategies__item"></div>
                 <div class="strategies__item"></div>
             </div>
@@ -276,7 +219,7 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
                     <div class="menu__item">
                         <div class="menu__item__title">home</div>
                     </div>
-                    <div class="menu__item">
+                    <!-- <div class="menu__item">
                         <div class="menu__item__title">alternatives</div>
                         <div class="menu__item__options">
                             <div class="menu__item__option" window-open="Polaris Point">Polaris Point</div>
@@ -288,14 +231,14 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
                         <div class="menu__item__options">
                             <div class="menu__item__option" window-open="Adaptive Investments">Adaptive Investments</div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="menu__item">
-                        <div class="menu__item__title">separate accounts</div>
+                        <div class="menu__item__title">bluestone strategies</div>
                         <div class="menu__item__options">
-                            <div class="menu__item__option" window-open="Bluestone Adaptive Alpha">Bluestone Adaptive Alpha</div>
-                            <div class="menu__item__option" window-open="Bluestone Elite">Bluestone Elite</div>
-                            <div class="menu__item__option" window-open="Bluestone Income">Bluestone Income</div>
-                            <div class="menu__item__option" window-open="Bluestone Income Plus">Bluestone Income Plus</div>
+                        <div class="menu__item__option" window-open="Bluestone Elite">Elite</div>
+                            <div class="menu__item__option" window-open="Bluestone Income">Income</div>
+                            <div class="menu__item__option" window-open="Bluestone Income Plus">Income Plus</div>
+                            <div class="menu__item__option" window-open="Bluestone Adaptive Investments">Adaptive Alpha Opportunities</div>
                         </div>
                     </div>
                     <div class="menu__item">
@@ -310,7 +253,7 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
                     (610) 337-6500 | <a href="mailto:info@bluestonecm.com">info@bluestonecm.com</a><br>
                     37 West Avenue | Suite 301 | Wayne PA 19087<br>
                     <a href="assets/Bstone+Privacy+Policy.pdf">Privacy Policy</a>&nbsp;
-                    | <a href="assets/ADV+2021+BCM.pdf">ADV Brochure</a>
+                    | <a href="assets/ADV+2023.pdf">ADV Brochure</a>
                     | <a href="assets/Business+Continuity+Disclosure.pdf">Business Continuity Disclosure</a>
                     | <a href="assets/Relationship+Summary+Form.pdf">Form CRS</a><br>
                 </div>
@@ -343,9 +286,9 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
                 The strategy utilizes equities and equity index/ETF securities to capture opportunities across assets, countries and sectors. The adaptive nature of the strategy enables Bluestone Elite to also employ fixed income instruments for the purposes of capital preservation. We employ a top-down approach to identify sectors that we believe will produce strong or weak relative performance to the overall market and makes investments to capitalize on these market opinions. When we deem it appropriate to position the portfolio defensively, this strategy considers cash to be an asset class and will allocate a significant percentage to cash and cash equivalents.
 
                 <div class="window__content__h1">PORTFOLIO MANAGERS</div>
-                Brian C. Shevland
+                Brian C. Shevland & Tom Wnekiewicz
             </div>
-            <a href="https://www.bluestonecm.com/s/Bluestone-Elite-Fact-Sheet-May-2021.pdf" class="window__link">FACT&nbsp;SHEET<span></span></a>
+            <!-- <a href="https://www.bluestonecm.com/s/Bluestone-Elite-Fact-Sheet-May-2021.pdf" class="window__link">FACT&nbsp;SHEET<span></span></a> -->
         </div>
     </div>
 </div>
@@ -367,9 +310,9 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
                 This strategy is designed to deliver a superior risk-adjusted yield while reducing volatility over a full market cycle. The strategy seeks to achieve this objective by investing in a broad basket of yield-producing assets including common and preferred equities, exchange traded debt, and ETFs/ETNs. This diversity allows us to produce a higher yield than a more traditional income product while still providing volatility reduction through active asset allocation model-based decision making. The strategy does not invest in junk bonds or distressed debt securities.
                 
                 <div class="window__content__h1">PORTFOLIO MANAGERS</div>
-                Lee A. Calfo & Andrew Giannone
+                Brian C. Shevland & Tom Wnekiewicz
             </div>
-            <a href="https://www.bluestonecm.com/s/202011-Bluestone-Income-Fact-Sheet.pdf" class="window__link">FACT&nbsp;SHEET<span></span></a>
+            <!-- <a href="https://www.bluestonecm.com/s/202011-Bluestone-Income-Fact-Sheet.pdf" class="window__link">FACT&nbsp;SHEET<span></span></a> -->
         </div>
     </div>
 </div>
@@ -403,7 +346,7 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
 
 <!--  -->
 
-<div class="window service-window" window="Bluestone Adaptive Alpha">
+<!-- <div class="window service-window" window="Bluestone Adaptive Alpha">
     <div class="wrapper">
         <div class="window__wrapper">
             <div class="window__close"></div>
@@ -428,7 +371,7 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
             <a href="https://www.bluestonecm.com/s/Bluestone-Adaptive-Alpha-Factsheet-MAR-2021.pdf" class="window__link">FACT&nbsp;SHEET<span></span></a>
         </div>
     </div>
-</div>
+</div> -->
 
 <!--  -->
 
@@ -447,16 +390,16 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
                 This hybrid strategy is designed to deliver a superior risk-adjusted yield while reducing volatility over a full market cycle. The strategy seeks to achieve this objective by investing in a broad basket of yield-producing assets including common and preferred equities, exchange traded debt, and ETFs/ETNs. This strategy also uses covered call option writing to generate additional income by capitalizing on volatility in the underlying securities. Income Plus seeks a significantly higher yield than a more traditional income product while still providing volatility reduction through active asset allocation model-based decision making. 
                 
                 <div class="window__content__h1">PORTFOLIO MANAGERS</div>
-                Lee A. Calfo & Andrew Giannone
+                Brian C. Shevland & Tom Wnekiewicz
             </div>
-            <a href="https://www.bluestonecm.com/s/202011-Bluestone-Income-Fact-Sheet.pdf" class="window__link">FACT&nbsp;SHEET<span></span></a>
+            <!-- <a href="https://www.bluestonecm.com/s/202011-Bluestone-Income-Fact-Sheet.pdf" class="window__link">FACT&nbsp;SHEET<span></span></a> -->
         </div>
     </div>
 </div>
 
 <!-- -->
 
-<div class="window service-window" window="Polaris Point">
+<!-- <div class="window service-window" window="Polaris Point">
     <div class="wrapper">
         <div class="window__wrapper">
             <div class="window__close"></div>
@@ -473,11 +416,11 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
             <a href="/s/Polaris-Point-LP-Fact-Sheet-202107.pdf" class="window__link">FACT&nbsp;SHEET<span></span></a>
         </div>
     </div>
-</div>
+</div> -->
 
 <!--  -->
 
-<div class="window service-window" window="Alt Strategies">
+<!-- <div class="window service-window" window="Alt Strategies">
     <div class="wrapper">
         <div class="window__wrapper">
             <div class="window__close"></div>
@@ -500,13 +443,13 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 
 <!--  -->
 
 
-<div class="window<?=$sent?' open':''?>">
+<div class="window mailsent">
     <div class="wrapper">
         <div class="window__wrapper">
             <div class="window__close"></div>
@@ -545,18 +488,18 @@ if (isset($_POST['contact_firstname'], $_POST['contact_lastname'], $_POST['conta
                 <div class="window__content">
                     <div class="window__content__h1">PLATFORMS</div>
                     <div class="access_us">
-                        <img src="./img/logos/l1.png" alt=""> 
-                        <img src="./img/logos/l2.png" alt=""> 
+                        <!-- <img src="./img/logos/l1.png" alt="">  -->
+                        <!-- <img src="./img/logos/l2.png" alt="">  -->
                         <img src="./img/logos/l3.png" alt=""> 
                         <img src="./img/logos/l4.png" alt=""> 
                         <img src="./img/logos/l5.png" alt=""> 
-                        <img src="./img/logos/l6.png" alt=""> 
-                        <img src="./img/logos/l7.png" alt=""> 
-                        <img src="./img/logos/l8.png" alt=""> 
-                        <img src="./img/logos/l9.png" alt=""> 
+                        <!-- <img src="./img/logos/l6.png" alt="">  -->
+                        <!-- <img src="./img/logos/l7.png" alt="">  -->
+                        <!-- <img src="./img/logos/l8.png" alt="">  -->
+                        <!-- <img src="./img/logos/l9.png" alt="">  -->
                         <img src="./img/logos/l10.png" alt=""> 
                         <img src="./img/logos/l11.png" alt=""> 
-                        <img src="./img/logos/l12.png" alt=""> 
+                        <!-- <img src="./img/logos/l12.png" alt="">  -->
                     </div>
                     <img src="" alt="">
                 </div>
